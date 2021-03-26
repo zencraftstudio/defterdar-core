@@ -12,6 +12,8 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "strictPropertyInitialization": false,
-        "typeRoots": ["./node_modules/@types"]
-    }
+        "typeRoots": ["./node_modules/@types"],
+
+    },
+    "exclude" : ["src/**/*.test.ts", "jest.config.ts"]
 }
