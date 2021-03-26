@@ -4,6 +4,7 @@
   "description": "Defterdar core is a backup system that utilizes git.",
   "main": "src/defterdar.ts",
   "scripts": {
+    "build": "tsc --module commonjs",
     "test": "jest"
   },
   "repository": {
