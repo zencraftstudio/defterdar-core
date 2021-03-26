@@ -1,6 +1,6 @@
 {
   "name": "defterdar-core",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Defterdar core is a backup system that utilizes git.",
   "main": "dist/defterdar.ts",
   "type": "module",
