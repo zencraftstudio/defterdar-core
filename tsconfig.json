@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "importHelpers": true,
+        "module": "commonjs",
+        "target": "es2017",
+        "lib": ["ES6", "es2019"],
+        "outDir": "build",
+        "rootDir": "src",
+        "strict": true,
+        "moduleResolution": "Node",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strictPropertyInitialization": false,
+        "typeRoots": ["./node_modules/@types"]
+    }
+}
