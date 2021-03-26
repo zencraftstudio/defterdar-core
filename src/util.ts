@@ -1,3 +1,3 @@
 export const consoleLog = (message: string) => {
-    cons`ole.log(message)
+    console.log(message)
 }
