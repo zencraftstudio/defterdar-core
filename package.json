@@ -23,8 +23,7 @@
     "preset": "ts-jest",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>",
-      "src/__tests__/"
+      "<rootDir>"
     ],
     "moduleDirectories": [
       "node_modules",

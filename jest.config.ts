@@ -7,7 +7,7 @@ export default async (): Promise<Config.InitialOptions> => {
         verbose: true,
         preset: "ts-jest",
         testEnvironment: "node",
-        roots: ["<rootDir>"],
+        roots: ["<rootDir>/src"],
         transform: {
             "node_modules/variables/.+\\.(j|t)sx?$": "ts-jest",
         },

@@ -4,7 +4,7 @@ import {
     getCommitHistory,
     getRepository, getTags, tagCommit, zipRepository,
 } from "./defterdar"
-import {cleanRepositoriesFolder, createTestCommits, initNewRepositoryFolder, replaceFileContent} from "./test/testUtils.test"
+import {cleanRepositoriesFolder, createTestCommits, initNewRepositoryFolder, replaceFileContent} from "./test/testUtils"
 
 test("initializing or read repository for a given folder", async () => {
     const newTestRepositoryFolder = await initNewRepositoryFolder("empty_test")
