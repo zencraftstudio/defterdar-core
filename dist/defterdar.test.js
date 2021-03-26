@@ -1,61 +1,58 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-const defterdar_1 = require("./defterdar");
-const testUtils_1 = require("./test/testUtils");
-test("initializing or read repository for a given folder", () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    const newTestRepositoryFolder = yield testUtils_1.initNewRepositoryFolder("empty_test");
-    const emptyResult = yield defterdar_1.getRepository(newTestRepositoryFolder);
+import { createCommit, createCommitMessage, createSnapshot, getCommitHistory, getRepository, getTags, tagCommit, zipRepository, } from "./defterdar";
+import { cleanRepositoriesFolder, createTestCommits, initNewRepositoryFolder, replaceFileContent } from "./test/testUtils";
+test("initializing or read repository for a given folder", async () => {
+    const newTestRepositoryFolder = await initNewRepositoryFolder("empty_test");
+    const emptyResult = await getRepository(newTestRepositoryFolder);
     expect(emptyResult.gitDir.includes(".git")).toBe(true);
     expect(emptyResult.existing).toBe(false);
-    const existingREsult = yield defterdar_1.getRepository(newTestRepositoryFolder);
+    const existingREsult = await getRepository(newTestRepositoryFolder);
     expect(existingREsult.gitDir.includes(".git")).toBe(true);
     expect(existingREsult.existing).toBe(true);
-}));
-test("can create commit", () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    const newTestRepositoryFolder = yield testUtils_1.initNewRepositoryFolder("create_commit_test");
-    yield testUtils_1.replaceFileContent(`${newTestRepositoryFolder}/testFile`);
-    const response = yield defterdar_1.createCommit(newTestRepositoryFolder, "test_commit");
+});
+test("can create commit", async () => {
+    const newTestRepositoryFolder = await initNewRepositoryFolder("create_commit_test");
+    await replaceFileContent(`${newTestRepositoryFolder}/testFile`);
+    const response = await createCommit(newTestRepositoryFolder, "test_commit");
     expect(response.branch).toBe("master");
     expect(response.commit).toBeDefined();
-}));
-test("can get commit history", () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    const newTestRepositoryFolder = yield testUtils_1.initNewRepositoryFolder("commit_history_test");
-    yield testUtils_1.replaceFileContent(`${newTestRepositoryFolder}/testFile`);
-    yield defterdar_1.createCommit(newTestRepositoryFolder, "test_commit");
-    const singleCommitHistory = yield defterdar_1.getCommitHistory(newTestRepositoryFolder);
+});
+test("can get commit history", async () => {
+    const newTestRepositoryFolder = await initNewRepositoryFolder("commit_history_test");
+    await replaceFileContent(`${newTestRepositoryFolder}/testFile`);
+    await createCommit(newTestRepositoryFolder, "test_commit");
+    const singleCommitHistory = await getCommitHistory(newTestRepositoryFolder);
     expect(singleCommitHistory.all.length).toBe(1);
-    yield testUtils_1.replaceFileContent(`${newTestRepositoryFolder}/testFile`);
-    yield defterdar_1.createCommit(newTestRepositoryFolder, "test_commit");
-    const doubleCommitHistory = yield defterdar_1.getCommitHistory(newTestRepositoryFolder);
+    await replaceFileContent(`${newTestRepositoryFolder}/testFile`);
+    await createCommit(newTestRepositoryFolder, "test_commit");
+    const doubleCommitHistory = await getCommitHistory(newTestRepositoryFolder);
     expect(doubleCommitHistory.all.length).toBe(2);
-}));
-test("can create commmit message", () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    const newTestRepositoryFolder = yield testUtils_1.initNewRepositoryFolder("commmit_message_test");
-    yield testUtils_1.replaceFileContent(`${newTestRepositoryFolder}/testFile`);
-    const result = yield defterdar_1.createCommitMessage(newTestRepositoryFolder);
+});
+test("can create commmit message", async () => {
+    const newTestRepositoryFolder = await initNewRepositoryFolder("commmit_message_test");
+    await replaceFileContent(`${newTestRepositoryFolder}/testFile`);
+    const result = await createCommitMessage(newTestRepositoryFolder);
     expect(result).toBe("{\"created\":[\"testFile\"],\"deleted\":[],\"modified\":[],\"renamed\":[]}");
-}));
-test("can create snapshot", () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    const newTestRepositoryFolder = yield testUtils_1.initNewRepositoryFolder("create_snapshot_test");
-    yield testUtils_1.replaceFileContent(`${newTestRepositoryFolder}/testFile`);
-    yield defterdar_1.createSnapshot(newTestRepositoryFolder, 10);
-}));
-test("can create archive", () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    const newTestRepositoryFolder = yield testUtils_1.initNewRepositoryFolder("create_archive");
-    yield testUtils_1.createTestCommits(newTestRepositoryFolder, 10);
-    yield defterdar_1.zipRepository(newTestRepositoryFolder, `defterdarExport-${Date.now()}.zip`);
+});
+test("can create snapshot", async () => {
+    const newTestRepositoryFolder = await initNewRepositoryFolder("create_snapshot_test");
+    await replaceFileContent(`${newTestRepositoryFolder}/testFile`);
+    await createSnapshot(newTestRepositoryFolder, 10);
+});
+test("can create archive", async () => {
+    const newTestRepositoryFolder = await initNewRepositoryFolder("create_archive");
+    await createTestCommits(newTestRepositoryFolder, 10);
+    await zipRepository(newTestRepositoryFolder, `defterdarExport-${Date.now()}.zip`);
     console.log("test");
-}));
-test("can create tag and read tags", () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    const newTestRepositoryFolder = yield testUtils_1.initNewRepositoryFolder("tag_commit");
-    yield testUtils_1.createTestCommits(newTestRepositoryFolder, 10);
-    const history = yield defterdar_1.getCommitHistory(newTestRepositoryFolder);
+});
+test("can create tag and read tags", async () => {
+    const newTestRepositoryFolder = await initNewRepositoryFolder("tag_commit");
+    await createTestCommits(newTestRepositoryFolder, 10);
+    const history = await getCommitHistory(newTestRepositoryFolder);
     const hashToTag = history.all[5].hash;
-    yield defterdar_1.tagCommit(newTestRepositoryFolder, hashToTag, "Test Tag Message");
-    const tags = yield defterdar_1.getTags(newTestRepositoryFolder);
+    await tagCommit(newTestRepositoryFolder, hashToTag, "Test Tag Message");
+    const tags = await getTags(newTestRepositoryFolder);
     expect(tags.all.length).toBe(1);
-}));
-afterAll(() => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    yield testUtils_1.cleanRepositoriesFolder();
-}));
+});
+afterAll(async () => {
+    await cleanRepositoriesFolder();
+});
