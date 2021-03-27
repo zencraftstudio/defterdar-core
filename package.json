@@ -6,7 +6,8 @@
     "scripts": {
         "build": "tsc",
         "test": "jest",
-        "bundle": "ts-node-script src/tools/bundler.ts"
+        "bundle": "ts-node-script src/tools/bundler.ts",
+        "copy-git-execs": "ts-node-script src/tools/copyGitExecs.ts"
     },
     "repository": {
         "type": "git",
