@@ -27,7 +27,7 @@ export const createCommitMessage = async (folderPath: string) => {
 
 export const getHistoryVersions = (folderPath: string) => simpleGit(folderPath).branch()
 export const createHistoryVersion = async (folderPath: string, commitHash: string, newHistoryName: string) => getRepository(folderPath).checkout(commitHash, ["-b", newHistoryName])
-
+export const checkoutHistoryVersion = (folderPath: string, historyVersionName: string) => simpleGit(folderPath).checkout(historyVersionName)
 
 export const createCommit = (
     folderPath: string,

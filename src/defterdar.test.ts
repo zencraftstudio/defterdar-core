@@ -3,10 +3,11 @@ import {
     createCommit, createCommitMessage,
     createSnapshot, createTaggedSnapshot,
     getCommitHistory, getHistoryVersions,
-    getRepository, getTags, tagCommit, zipRepository,
+    getRepository, getTags, tagCommit, zipRepository, checkoutHistoryVersion,
 } from "./defterdar"
 import {cleanRepositoriesFolder, createTestCommits, initNewRepositoryFolder, replaceFileContent} from "./test/testUtils"
 import * as fs from "fs";
+import {folderExists} from "simple-git/src/lib/utils";
 
 test("initializing or read repository for a given folder", async () => {
     const newTestRepositoryFolder = await initNewRepositoryFolder("empty_test")
@@ -80,7 +81,7 @@ test("can create tagged snapshot", async () => {
     expect(taggedSnapshotResult.all.length).toBe(1)
 });
 
-test("can checkout a given snapshot id", async () => {
+test("can create list and checkout history versions", async () => {
     const newTestRepositoryFolder = await initNewRepositoryFolder("checkout_snapshot")
     await createTestCommits(newTestRepositoryFolder, 10)
     const history = await getCommitHistory(newTestRepositoryFolder)
@@ -89,6 +90,9 @@ test("can checkout a given snapshot id", async () => {
     const historyVersions = await getHistoryVersions(newTestRepositoryFolder)
     expect(checkedOutHistory.all.length).toBe(5)
     expect(historyVersions.all.length).toBe(2)
+    const checkMainHistoryback = await checkoutHistoryVersion(newTestRepositoryFolder, "master")
+    const mainHistory = await getCommitHistory(newTestRepositoryFolder)
+    expect(mainHistory.all.length).toBe(10)
 })
 
 afterAll(async () => {
