@@ -40,9 +40,9 @@ export const tagCommit = (folderPath: string, commitHash: string, tagMessage: st
 
 export const getTags = (folderPath: string) => getRepository(folderPath).tags(["-n1"])
 
-export const zipRepository = (folderPath: string, outputFilePath: string) => {
+export const zipRepository = (folderPath: string, outputFilePath: string) => (
     getRepository(folderPath).raw("archive", "--format=zip", `--output=${outputFilePath}`, "master")
-}
+)
 const backupRepository = (folderPath: string, username: string, password: string, repositoryPath: string) => {
 }
 

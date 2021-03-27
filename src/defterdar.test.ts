@@ -5,6 +5,7 @@ import {
     getRepository, getTags, tagCommit, zipRepository,
 } from "./defterdar"
 import {cleanRepositoriesFolder, createTestCommits, initNewRepositoryFolder, replaceFileContent} from "./test/testUtils"
+import * as fs from "fs";
 
 test("initializing or read repository for a given folder", async () => {
     const newTestRepositoryFolder = await initNewRepositoryFolder("empty_test")
@@ -54,8 +55,10 @@ test("can create snapshot", async () => {
 test("can create archive", async () => {
     const newTestRepositoryFolder = await initNewRepositoryFolder("create_archive")
     await createTestCommits(newTestRepositoryFolder, 10)
-    await zipRepository(newTestRepositoryFolder, `defterdarExport-${Date.now()}.zip`)
-    console.log("test")
+    const outputFileName = `defterdarExport-${Date.now()}.zip`
+    await zipRepository(newTestRepositoryFolder, outputFileName)
+    const outputFileCheck = fs.existsSync(`${newTestRepositoryFolder}/${outputFileName}`)
+    expect(outputFileCheck).toBe(true)
 })
 
 test("can create tag and read tags", async () => {
@@ -69,7 +72,7 @@ test("can create tag and read tags", async () => {
 })
 
 test("can create tagged snapshot", async () => {
-    const newTestRepositoryFolder = await initNewRepositoryFolder("tag_commit")
+    const newTestRepositoryFolder = await initNewRepositoryFolder("tagged_snapshot")
     await replaceFileContent(`${newTestRepositoryFolder}/1`)
     const taggedSnapshotResult = await createTaggedSnapshot(newTestRepositoryFolder, "hello world", () => {
     })
