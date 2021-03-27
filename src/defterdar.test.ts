@@ -1,6 +1,6 @@
 import {
     createCommit, createCommitMessage,
-    createSnapshot,
+    createSnapshot, createTaggedSnapshot,
     getCommitHistory,
     getRepository, getTags, tagCommit, zipRepository,
 } from "./defterdar"
@@ -47,7 +47,8 @@ test("can create commmit message", async () => {
 test("can create snapshot", async () => {
     const newTestRepositoryFolder = await initNewRepositoryFolder("create_snapshot_test")
     await replaceFileContent(`${newTestRepositoryFolder}/testFile`)
-    await createSnapshot(newTestRepositoryFolder, 10, ()=>{})
+    await createSnapshot(newTestRepositoryFolder, true, 10, () => {
+    })
 })
 
 test("can create archive", async () => {
@@ -66,6 +67,14 @@ test("can create tag and read tags", async () => {
     const tags = await getTags(newTestRepositoryFolder)
     expect(tags.all.length).toBe(1)
 })
+
+test("can create tagged snapshot", async () => {
+    const newTestRepositoryFolder = await initNewRepositoryFolder("tag_commit")
+    await replaceFileContent(`${newTestRepositoryFolder}/1`)
+    const taggedSnapshotResult = await createTaggedSnapshot(newTestRepositoryFolder, "hello world", () => {
+    })
+    expect(taggedSnapshotResult.all.length).toBe(1)
+});
 
 afterAll(async () => {
     await cleanRepositoriesFolder()
