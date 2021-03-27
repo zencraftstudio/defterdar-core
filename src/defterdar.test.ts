@@ -3,7 +3,7 @@ import {
     createCommit, createCommitMessage,
     createSnapshot, createTaggedSnapshot,
     getCommitHistory, getHistoryVersions,
-    getRepository, getTags, tagCommit, zipRepository, checkoutHistoryVersion,
+    getRepository, getTags, tagSnapshot, zipRepository, checkoutHistoryVersion,
 } from "./defterdar"
 import {cleanRepositoriesFolder, createTestCommits, initNewRepositoryFolder, replaceFileContent} from "./test/testUtils"
 import * as fs from "fs";
@@ -68,7 +68,7 @@ test("can create tag and read tags", async () => {
     await createTestCommits(newTestRepositoryFolder, 10)
     const history = await getCommitHistory(newTestRepositoryFolder)
     const hashToTag = history.all[5].hash
-    await tagCommit(newTestRepositoryFolder, hashToTag, "Test Tag Message")
+    await tagSnapshot(newTestRepositoryFolder, hashToTag, "Test Tag Message")
     const tags = await getTags(newTestRepositoryFolder)
     expect(tags.all.length).toBe(1)
 })

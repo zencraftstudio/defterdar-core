@@ -41,7 +41,7 @@ const calculateCompressableCommits = (folderPath: string, compressionRatio = 1) 
 
 }
 
-export const tagCommit = (folderPath: string, commitHash: string, tagMessage: string) => (
+export const tagSnapshot = (folderPath: string, commitHash: string, tagMessage: string) => (
     getRepository(folderPath).tag([`-m "${tagMessage}"`, commitHash])
 )
 
@@ -55,7 +55,7 @@ const backupRepository = (folderPath: string, username: string, password: string
 
 export const createTaggedSnapshot = async (folderPath: string, tagMessage: string, callback: CallableFunction) => {
     const commitResult = await createSnapshot(folderPath, false, 0, callback)
-    await tagCommit(folderPath, commitResult.commit, tagMessage)
+    await tagSnapshot(folderPath, commitResult.commit, tagMessage)
     const tags = await getTags(folderPath)
     callback(CallbackType.snapshot_tagged, {"tagResults": tags, "timestamp": Date.now()})
     return tags
@@ -81,6 +81,6 @@ export const createSnapshot = async (folderPath: string, queueNextSnapshot: bool
 
 export const stopNextSnapshotTimer = () => (clearTimeout(nextSnapshotTimer))
 
-export const initializeDefterdar = async (folderPath: string, intervalInSeconds: number, callback: CallableFunction) => {
+export const startAutoSnapshotTimer = async (folderPath: string, intervalInSeconds: number, callback: CallableFunction) => {
     await createSnapshot(folderPath, true, intervalInSeconds, callback)
 }
