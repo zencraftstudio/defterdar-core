@@ -5,7 +5,8 @@
   "main": "dist/defterdar.js",
   "scripts": {
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "bundle": "ts-node-script src/tools/bundler.ts"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
+    "axios": "^0.21.1",
     "jest": "^26.6.3",
     "ts-jest": "^26.5.4",
     "ts-node": "^9.1.1",
