@@ -1,45 +1,45 @@
 {
-  "name": "defterdar-core",
-  "version": "1.1.1",
-  "description": "Defterdar core is a backup system that utilizes git.",
-  "main": "dist/defterdar.js",
-  "scripts": {
-    "build": "tsc",
-    "test": "jest"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/zencraftou/defterdar-core.git"
-  },
-  "keywords": [
-    "defterdar"
-  ],
-  "author": "Gokay Kucuk - Fatih Gozenc",
-  "license": "GPL-3.0-or-later",
-  "bugs": {
-    "url": "https://github.com/zencraftou/defterdar-core/issues"
-  },
-  "homepage": "https://github.com/zencraftou/defterdar-core#readme",
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "roots": [
-      "<rootDir>"
+    "name": "defterdar-core",
+    "version": "1.1.1",
+    "description": "Defterdar core is a backup system that utilizes git.",
+    "main": "dist/defterdar.js",
+    "scripts": {
+        "build": "tsc",
+        "test": "jest"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/zencraftou/defterdar-core.git"
+    },
+    "keywords": [
+        "defterdar"
     ],
-    "moduleDirectories": [
-      "node_modules",
-      "src"
-    ]
-  },
-  "devDependencies": {
-    "@types/jest": "^26.0.22",
-    "jest": "^26.6.3",
-    "ts-jest": "^26.5.4",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.2.3"
-  },
-  "dependencies": {
-    "simple-git": "^2.37.0",
-    "tslib": "^2.1.0"
-  }
+    "author": "Gokay Kucuk - Fatih Gozenc",
+    "license": "GPL-3.0-or-later",
+    "bugs": {
+        "url": "https://github.com/zencraftou/defterdar-core/issues"
+    },
+    "homepage": "https://github.com/zencraftou/defterdar-core#readme",
+    "jest": {
+        "preset": "ts-jest",
+        "testEnvironment": "node",
+        "roots": [
+            "<rootDir>"
+        ],
+        "moduleDirectories": [
+            "node_modules",
+            "src"
+        ]
+    },
+    "devDependencies": {
+        "@types/jest": "^26.0.22",
+        "jest": "^26.6.3",
+        "ts-jest": "^26.5.4",
+        "ts-node": "^9.1.1",
+        "typescript": "^4.2.3"
+    },
+    "dependencies": {
+        "simple-git": "^2.37.0",
+        "tslib": "^2.1.0"
+    }
 }
