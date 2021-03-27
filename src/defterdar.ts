@@ -1,7 +1,7 @@
 import simpleGit from "simple-git"
 import {consoleLog} from "./util"
 
-enum CallbackType {
+export enum CallbackType {
     initialization = 0,
     snapshot_skipped = 1,
     snapshot_taken = 2,
