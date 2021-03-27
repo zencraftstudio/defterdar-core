@@ -1,6 +1,12 @@
 import simpleGit from "simple-git"
 import {consoleLog} from "./util"
 
+enum CallbackType {
+    initialization = 0,
+    snapshot_skipped = 1,
+    snapshot_taken = 2,
+}
+
 export const getRepository = (folderPath: string) => simpleGit(folderPath).init()
 
 export const getCommitHistory = (folderPath: string) => (
@@ -39,17 +45,17 @@ export const zipRepository = (folderPath: string, outputFilePath: string) => {
 const backupRepository = (folderPath: string, username: string, password: string, repositoryPath: string) => {
 }
 
-export const createSnapshot = async (folderPath: string, nextSnapshotAt: number) => {
+export const createSnapshot = async (folderPath: string, nextSnapshotAt: number, callback: CallableFunction) => {
     const commitMessage = await createCommitMessage(folderPath)
     const commitResponse = await createCommit(folderPath, commitMessage)
     if (commitResponse.commit) {
-        consoleLog(`Created snapshot ${commitResponse.commit} at ${new Date().toJSON()}`)
+        callback(CallbackType.snapshot_taken, {"commit_response": commitResponse, "timestamp": (new Date().toJSON())})
     } else {
-        consoleLog(`No changes at ${new Date().toJSON()}. Skipping snapshot...`)
+        callback(CallbackType.snapshot_skipped, {"commit_response": commitResponse, "timestamp": (new Date().toJSON())})
     }
-    setInterval(() => createSnapshot(folderPath, nextSnapshotAt * 1000), nextSnapshotAt * 1000)
+    setInterval(() => createSnapshot(folderPath, nextSnapshotAt * 1000, callback), nextSnapshotAt * 1000)
 }
 
-export const initializeDefterdar = async (folderPath: string, intervalInSeconds: number) => {
-    await createSnapshot(folderPath, intervalInSeconds)
+export const initializeDefterdar = async (folderPath: string, intervalInSeconds: number, callback: CallableFunction) => {
+    await createSnapshot(folderPath, intervalInSeconds, callback)
 }
