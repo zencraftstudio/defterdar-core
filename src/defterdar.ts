@@ -5,7 +5,8 @@ export enum CallbackType {
     initialization,
     snapshot_skipped,
     snapshot_taken,
-    snapshot_tagged
+    snapshot_tagged,
+    snapshot_resumed
 }
 
 export const getRepository = (folderPath: string) => simpleGit(folderPath, {binary: getGitExecutable()}).init()
@@ -23,6 +24,10 @@ export const createCommitMessage = async (folderPath: string) => {
     // flatten the message array
     return JSON.stringify(relevantKeys)
 }
+
+export const getHistoryVersions = (folderPath: string) => simpleGit(folderPath).branch()
+export const createHistoryVersion = async (folderPath: string, commitHash: string, newHistoryName: string) => getRepository(folderPath).checkout(commitHash, ["-b", newHistoryName])
+
 
 export const createCommit = (
     folderPath: string,

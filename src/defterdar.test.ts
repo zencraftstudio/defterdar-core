@@ -1,7 +1,8 @@
 import {
+    createHistoryVersion,
     createCommit, createCommitMessage,
     createSnapshot, createTaggedSnapshot,
-    getCommitHistory,
+    getCommitHistory, getHistoryVersions,
     getRepository, getTags, tagCommit, zipRepository,
 } from "./defterdar"
 import {cleanRepositoriesFolder, createTestCommits, initNewRepositoryFolder, replaceFileContent} from "./test/testUtils"
@@ -78,6 +79,17 @@ test("can create tagged snapshot", async () => {
     })
     expect(taggedSnapshotResult.all.length).toBe(1)
 });
+
+test("can checkout a given snapshot id", async () => {
+    const newTestRepositoryFolder = await initNewRepositoryFolder("checkout_snapshot")
+    await createTestCommits(newTestRepositoryFolder, 10)
+    const history = await getCommitHistory(newTestRepositoryFolder)
+    const checkoutResult = await createHistoryVersion(newTestRepositoryFolder, history.all[5].hash, "new_test_history")
+    const checkedOutHistory = await getCommitHistory(newTestRepositoryFolder)
+    const historyVersions = await getHistoryVersions(newTestRepositoryFolder)
+    expect(checkedOutHistory.all.length).toBe(5)
+    expect(historyVersions.all.length).toBe(2)
+})
 
 afterAll(async () => {
     await cleanRepositoriesFolder()

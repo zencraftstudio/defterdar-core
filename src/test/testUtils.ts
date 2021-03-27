@@ -18,7 +18,11 @@ export const cleanRepositoriesFolder = async () => {
     await sleep(1000).then(() => rmdir(REPOSITORIES_PATH, {recursive: true}))
 }
 
-export const replaceFileContent = async (filePath: string) => writeFile(filePath, randomBytes(100))
+export const replaceFileContent = async (filePath: string) => {
+    const randomContent = randomBytes(100)
+    await writeFile(filePath, randomContent)
+    return randomContent
+}
 
 export const createTestCommits = async (folderPath: string, numberOfCommits: number) => {
     const git = simpleGit(folderPath).init()
