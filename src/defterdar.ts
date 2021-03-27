@@ -6,7 +6,9 @@ export enum CallbackType {
     snapshot_skipped,
     snapshot_taken,
     snapshot_tagged,
-    snapshot_resumed
+    snapshot_resumed,
+    snapshot_timer_started,
+    snapshot_timer_stopped
 }
 
 export const getRepository = (folderPath: string) => simpleGit(folderPath, {binary: getGitExecutable()}).init()
@@ -59,7 +61,8 @@ export const createTaggedSnapshot = async (folderPath: string, tagMessage: strin
     return tags
 }
 
-export const createSnapshot = async (folderPath: string, queueNextSnapshot: boolean, nextSnapshotAt: number, callback: CallableFunction) => {
+let nextSnapshotTimer: any = null
+export const createSnapshot = async (folderPath: string, queueNextSnapshot: boolean, nextSnapshotInSeconds: number, callback: CallableFunction) => {
     const commitMessage = await createCommitMessage(folderPath)
     const commitResult = await createCommit(folderPath, commitMessage)
 
@@ -70,11 +73,13 @@ export const createSnapshot = async (folderPath: string, queueNextSnapshot: bool
     }
 
     if (queueNextSnapshot) {
-        setInterval(() => createSnapshot(folderPath, queueNextSnapshot, nextSnapshotAt * 1000, callback), nextSnapshotAt * 1000)
+        nextSnapshotTimer = setTimeout(() => createSnapshot(folderPath, queueNextSnapshot, nextSnapshotInSeconds * 1000, callback), nextSnapshotInSeconds * 1000)
+        callback(CallbackType.snapshot_timer_started, {"nextSnapshotMiliseconds": nextSnapshotInSeconds * 1000})
     }
     return commitResult
-
 }
+
+export const stopNextSnapshotTimer = () => (clearTimeout(nextSnapshotTimer))
 
 export const initializeDefterdar = async (folderPath: string, intervalInSeconds: number, callback: CallableFunction) => {
     await createSnapshot(folderPath, true, intervalInSeconds, callback)
