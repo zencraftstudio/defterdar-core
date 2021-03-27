@@ -3,6 +3,8 @@
 This library provides defterdar functionality and carries git executables for supported platforms. The following
 functionality is exposed through the API, the undocumented methods should not be used.
 
+## Public API
+
 #### startAutoSnapshotTimer
 
 ```
