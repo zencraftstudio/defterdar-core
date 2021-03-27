@@ -38,7 +38,7 @@ test("can create commmit message", async () => {
 test("can create snapshot", async () => {
     const newTestRepositoryFolder = await testUtils_1.initNewRepositoryFolder("create_snapshot_test");
     await testUtils_1.replaceFileContent(`${newTestRepositoryFolder}/testFile`);
-    await defterdar_1.createSnapshot(newTestRepositoryFolder, 10);
+    await defterdar_1.createSnapshot(newTestRepositoryFolder, 10, () => { });
 });
 test("can create archive", async () => {
     const newTestRepositoryFolder = await testUtils_1.initNewRepositoryFolder("create_archive");

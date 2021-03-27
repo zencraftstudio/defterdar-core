@@ -1,9 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.initializeDefterdar = exports.createSnapshot = exports.zipRepository = exports.getTags = exports.tagCommit = exports.createCommit = exports.createCommitMessage = exports.getCommitHistory = exports.getRepository = void 0;
+exports.initializeDefterdar = exports.createSnapshot = exports.zipRepository = exports.getTags = exports.tagCommit = exports.createCommit = exports.createCommitMessage = exports.getCommitHistory = exports.getRepository = exports.CallbackType = void 0;
 const tslib_1 = require("tslib");
 const simple_git_1 = tslib_1.__importDefault(require("simple-git"));
-const util_1 = require("./util");
+var CallbackType;
+(function (CallbackType) {
+    CallbackType[CallbackType["initialization"] = 0] = "initialization";
+    CallbackType[CallbackType["snapshot_skipped"] = 1] = "snapshot_skipped";
+    CallbackType[CallbackType["snapshot_taken"] = 2] = "snapshot_taken";
+})(CallbackType = exports.CallbackType || (exports.CallbackType = {}));
 const getRepository = (folderPath) => simple_git_1.default(folderPath).init();
 exports.getRepository = getRepository;
 const getCommitHistory = (folderPath) => (exports.getRepository(folderPath).log());
@@ -33,19 +38,19 @@ const zipRepository = (folderPath, outputFilePath) => {
 exports.zipRepository = zipRepository;
 const backupRepository = (folderPath, username, password, repositoryPath) => {
 };
-const createSnapshot = async (folderPath, nextSnapshotAt) => {
+const createSnapshot = async (folderPath, nextSnapshotAt, callback) => {
     const commitMessage = await exports.createCommitMessage(folderPath);
     const commitResponse = await exports.createCommit(folderPath, commitMessage);
     if (commitResponse.commit) {
-        util_1.consoleLog(`Created snapshot ${commitResponse.commit} at ${new Date().toJSON()}`);
+        callback(CallbackType.snapshot_taken, { "commit_response": commitResponse, "timestamp": (new Date().toJSON()) });
     }
     else {
-        util_1.consoleLog(`No changes at ${new Date().toJSON()}. Skipping snapshot...`);
+        callback(CallbackType.snapshot_skipped, { "commit_response": commitResponse, "timestamp": (new Date().toJSON()) });
     }
-    setInterval(() => exports.createSnapshot(folderPath, nextSnapshotAt * 1000), nextSnapshotAt * 1000);
+    setInterval(() => exports.createSnapshot(folderPath, nextSnapshotAt * 1000, callback), nextSnapshotAt * 1000);
 };
 exports.createSnapshot = createSnapshot;
-const initializeDefterdar = async (folderPath, intervalInSeconds) => {
-    await exports.createSnapshot(folderPath, intervalInSeconds);
+const initializeDefterdar = async (folderPath, intervalInSeconds, callback) => {
+    await exports.createSnapshot(folderPath, intervalInSeconds, callback);
 };
 exports.initializeDefterdar = initializeDefterdar;
