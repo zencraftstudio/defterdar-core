@@ -1,5 +1,5 @@
 import simpleGit from "simple-git"
-import {consoleLog} from "./util"
+import {getGitExecutable} from "./util"
 
 export enum CallbackType {
     initialization = 0,
@@ -7,7 +7,7 @@ export enum CallbackType {
     snapshot_taken = 2,
 }
 
-export const getRepository = (folderPath: string) => simpleGit(folderPath).init()
+export const getRepository = (folderPath: string) => simpleGit(folderPath, {binary: getGitExecutable()}).init()
 
 export const getCommitHistory = (folderPath: string) => (
     getRepository(folderPath).log()
@@ -49,9 +49,9 @@ export const createSnapshot = async (folderPath: string, nextSnapshotAt: number,
     const commitMessage = await createCommitMessage(folderPath)
     const commitResponse = await createCommit(folderPath, commitMessage)
     if (commitResponse.commit) {
-        callback(CallbackType.snapshot_taken, {"commit_response": commitResponse, "timestamp": (new Date().toJSON())})
+        callback(CallbackType.snapshot_taken, {"commit_response": commitResponse, "timestamp": Date.now()})
     } else {
-        callback(CallbackType.snapshot_skipped, {"commit_response": commitResponse, "timestamp": (new Date().toJSON())})
+        callback(CallbackType.snapshot_skipped, {"commit_response": commitResponse, "timestamp": Date.now()})
     }
     setInterval(() => createSnapshot(folderPath, nextSnapshotAt * 1000, callback), nextSnapshotAt * 1000)
 }
