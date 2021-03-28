@@ -72,7 +72,10 @@ const createSnapshot = async (folderPath, queueNextSnapshot, nextSnapshotInSecon
     // Queue the next snapshot if it's requested.
     if (queueNextSnapshot) {
         nextSnapshotTimer = setTimeout(() => exports.createSnapshot(folderPath, queueNextSnapshot, nextSnapshotInSeconds * 1000, callback), nextSnapshotInSeconds * 1000);
-        callback(CallbackType.snapshot_timer_started, { "nextSnapshotMiliseconds": nextSnapshotInSeconds * 1000 });
+        callback(CallbackType.snapshot_timer_started, {
+            "nextSnapshotMiliseconds": nextSnapshotInSeconds * 1000,
+            "timestamp": Date.now()
+        });
     }
     return commitResult;
 };
