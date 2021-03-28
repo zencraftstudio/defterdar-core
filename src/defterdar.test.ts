@@ -9,6 +9,11 @@ import {cleanRepositoriesFolder, createTestCommits, initNewRepositoryFolder, rep
 import * as fs from "fs";
 import {folderExists} from "simple-git/src/lib/utils";
 
+beforeAll(async () => {
+    await cleanRepositoriesFolder()
+})
+
+
 test("initializing or read repository for a given folder", async () => {
     const newTestRepositoryFolder = await initNewRepositoryFolder("empty_test")
     const emptyResult = await getRepository(newTestRepositoryFolder)
@@ -85,7 +90,8 @@ test("can create list and checkout history versions", async () => {
     const newTestRepositoryFolder = await initNewRepositoryFolder("checkout_snapshot")
     await createTestCommits(newTestRepositoryFolder, 10)
     const history = await getCommitHistory(newTestRepositoryFolder)
-    const checkoutResult = await createHistoryVersion(newTestRepositoryFolder, history.all[5].hash, "new_test_history", false, 0, ()=>{})
+    const checkoutResult = await createHistoryVersion(newTestRepositoryFolder, history.all[5].hash, "new_test_history", false, 0, () => {
+    })
     const checkedOutHistory = await getCommitHistory(newTestRepositoryFolder)
     const historyVersions = await getHistoryVersions(newTestRepositoryFolder)
     expect(checkedOutHistory.all.length).toBe(5)

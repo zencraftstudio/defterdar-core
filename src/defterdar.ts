@@ -71,8 +71,11 @@ export const createTaggedSnapshot = async (folderPath: string, tagMessage: strin
 }
 
 let nextSnapshotTimer: any = null
-export const clearNextSnapshotTimer = () => (clearTimeout(nextSnapshotTimer))
 export const createSnapshot = async (folderPath: string, queueNextSnapshot: boolean, nextSnapshotInSeconds: number, callback: CallableFunction) => {
+    // Start with clearing timeout, so no other snapshots
+    // can start while this one is running
+    clearTimeout(nextSnapshotTimer)
+
     const commitMessage = await createCommitMessage(folderPath)
     const commitResult = await createCommit(folderPath, commitMessage)
 
@@ -82,7 +85,7 @@ export const createSnapshot = async (folderPath: string, queueNextSnapshot: bool
         callback(CallbackType.snapshot_skipped, {"commitResult": commitResult, "timestamp": Date.now()})
     }
 
-    clearNextSnapshotTimer()
+    // Queue the next snapshot if it's requested.
     if (queueNextSnapshot) {
         nextSnapshotTimer = setTimeout(() => createSnapshot(folderPath, queueNextSnapshot, nextSnapshotInSeconds * 1000, callback), nextSnapshotInSeconds * 1000)
         callback(CallbackType.snapshot_timer_started, {"nextSnapshotMiliseconds": nextSnapshotInSeconds * 1000})
