@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.startAutoSnapshotTimer = exports.createSnapshot = exports.createTaggedSnapshot = exports.zipRepository = exports.getTags = exports.tagSnapshot = exports.createCommit = exports.checkoutHistoryVersion = exports.createHistoryVersion = exports.getHistoryVersions = exports.createCommitMessage = exports.getCommitHistory = exports.getRepository = exports.CallbackType = void 0;
+exports.createSnapshot = exports.createTaggedSnapshot = exports.zipRepository = exports.getTags = exports.tagSnapshot = exports.createCommit = exports.checkoutHistoryVersion = exports.createHistoryVersion = exports.getHistoryVersions = exports.createCommitMessage = exports.getCommitHistory = exports.getRepository = exports.CallbackType = void 0;
 const tslib_1 = require("tslib");
 const simple_git_1 = tslib_1.__importDefault(require("simple-git"));
 const util_1 = require("./util");
@@ -77,7 +77,3 @@ const createSnapshot = async (folderPath, queueNextSnapshot, nextSnapshotInSecon
     return commitResult;
 };
 exports.createSnapshot = createSnapshot;
-const startAutoSnapshotTimer = async (folderPath, intervalInSeconds, callback) => {
-    await exports.createSnapshot(folderPath, true, intervalInSeconds, callback);
-};
-exports.startAutoSnapshotTimer = startAutoSnapshotTimer;

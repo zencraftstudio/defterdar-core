@@ -12,4 +12,4 @@ test("can upload archive and list archives", async () => {
     expect(uploadResult['fileId']).toBeDefined();
     const listResult = await cloud_1.listUploadedArchives();
     expect(listResult.files.length).toBe(1);
-});
+}, 10000);

@@ -92,7 +92,3 @@ export const createSnapshot = async (folderPath: string, queueNextSnapshot: bool
     }
     return commitResult
 }
-
-export const startAutoSnapshotTimer = async (folderPath: string, intervalInSeconds: number, callback: CallableFunction) => {
-    await createSnapshot(folderPath, true, intervalInSeconds, callback)
-}

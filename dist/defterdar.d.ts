@@ -19,4 +19,3 @@ export declare const getTags: (folderPath: string) => import("simple-git").Respo
 export declare const zipRepository: (folderPath: string, outputFilePath: string) => import("simple-git").Response<string>;
 export declare const createTaggedSnapshot: (folderPath: string, tagMessage: string, callback: CallableFunction) => Promise<import("simple-git").TagResult>;
 export declare const createSnapshot: (folderPath: string, queueNextSnapshot: boolean, nextSnapshotInSeconds: number, callback: CallableFunction) => Promise<import("simple-git").CommitResult>;
-export declare const startAutoSnapshotTimer: (folderPath: string, intervalInSeconds: number, callback: CallableFunction) => Promise<void>;
