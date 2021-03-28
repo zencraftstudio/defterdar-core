@@ -28,6 +28,7 @@ const GIT_FOLDERS = {
     }
 };
 const getGitExecutable = () => {
+    return `${__dirname}/../${GIT_FOLDERS["darwin"]["x64"]["19"]}`;
     const platform = os.platform().toString();
     // @ts-ignore
     const platform_gits = GIT_FOLDERS[platform];
