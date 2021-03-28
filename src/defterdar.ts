@@ -28,7 +28,16 @@ export const createCommitMessage = async (folderPath: string) => {
 }
 
 export const getHistoryVersions = (folderPath: string) => simpleGit(folderPath).branch()
-export const createHistoryVersion = async (folderPath: string, commitHash: string, newHistoryName: string) => getRepository(folderPath).checkout(commitHash, ["-b", newHistoryName])
+export const createHistoryVersion = async (folderPath: string,
+                                           commitHash: string,
+                                           newHistoryName: string,
+                                           queueNextSnapshot: boolean,
+                                           nextSnapshotInSeconds: number,
+                                           callback: CallableFunction) => {
+    await createSnapshot(folderPath, queueNextSnapshot, nextSnapshotInSeconds, callback)
+    return await getRepository(folderPath).checkout(commitHash, ["-b", newHistoryName]
+    )
+}
 export const checkoutHistoryVersion = (folderPath: string, historyVersionName: string) => simpleGit(folderPath).checkout(historyVersionName)
 
 export const createCommit = (
@@ -62,6 +71,7 @@ export const createTaggedSnapshot = async (folderPath: string, tagMessage: strin
 }
 
 let nextSnapshotTimer: any = null
+export const clearNextSnapshotTimer = () => (clearTimeout(nextSnapshotTimer))
 export const createSnapshot = async (folderPath: string, queueNextSnapshot: boolean, nextSnapshotInSeconds: number, callback: CallableFunction) => {
     const commitMessage = await createCommitMessage(folderPath)
     const commitResult = await createCommit(folderPath, commitMessage)
@@ -72,14 +82,13 @@ export const createSnapshot = async (folderPath: string, queueNextSnapshot: bool
         callback(CallbackType.snapshot_skipped, {"commitResult": commitResult, "timestamp": Date.now()})
     }
 
+    clearNextSnapshotTimer()
     if (queueNextSnapshot) {
         nextSnapshotTimer = setTimeout(() => createSnapshot(folderPath, queueNextSnapshot, nextSnapshotInSeconds * 1000, callback), nextSnapshotInSeconds * 1000)
         callback(CallbackType.snapshot_timer_started, {"nextSnapshotMiliseconds": nextSnapshotInSeconds * 1000})
     }
     return commitResult
 }
-
-export const stopNextSnapshotTimer = () => (clearTimeout(nextSnapshotTimer))
 
 export const startAutoSnapshotTimer = async (folderPath: string, intervalInSeconds: number, callback: CallableFunction) => {
     await createSnapshot(folderPath, true, intervalInSeconds, callback)

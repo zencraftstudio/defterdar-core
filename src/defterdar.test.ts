@@ -85,7 +85,7 @@ test("can create list and checkout history versions", async () => {
     const newTestRepositoryFolder = await initNewRepositoryFolder("checkout_snapshot")
     await createTestCommits(newTestRepositoryFolder, 10)
     const history = await getCommitHistory(newTestRepositoryFolder)
-    const checkoutResult = await createHistoryVersion(newTestRepositoryFolder, history.all[5].hash, "new_test_history")
+    const checkoutResult = await createHistoryVersion(newTestRepositoryFolder, history.all[5].hash, "new_test_history", false, 0, ()=>{})
     const checkedOutHistory = await getCommitHistory(newTestRepositoryFolder)
     const historyVersions = await getHistoryVersions(newTestRepositoryFolder)
     expect(checkedOutHistory.all.length).toBe(5)
