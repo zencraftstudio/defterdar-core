@@ -59,6 +59,11 @@ test("can create snapshot", async () => {
     })
 })
 
+createSnapshot("/Users/gokaykucuk/temp/tempRepo", true, 10, () => {
+})
+
+
+
 test("can create archive", async () => {
     const newTestRepositoryFolder = await initNewRepositoryFolder("create_archive")
     await createTestCommits(newTestRepositoryFolder, 10)
