@@ -19,7 +19,11 @@ const cleanRepositoriesFolder = async () => {
     await sleep(1000).then(() => promises_1.rmdir(REPOSITORIES_PATH, { recursive: true }));
 };
 exports.cleanRepositoriesFolder = cleanRepositoriesFolder;
-const replaceFileContent = async (filePath) => promises_1.writeFile(filePath, crypto_1.randomBytes(100));
+const replaceFileContent = async (filePath) => {
+    const randomContent = crypto_1.randomBytes(100);
+    await promises_1.writeFile(filePath, randomContent);
+    return randomContent;
+};
 exports.replaceFileContent = replaceFileContent;
 const createTestCommits = async (folderPath, numberOfCommits) => {
     const git = simple_git_1.default(folderPath).init();
