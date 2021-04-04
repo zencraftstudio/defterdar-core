@@ -89,7 +89,7 @@ export const createSnapshot = async (folderPath: string, queueNextSnapshot: bool
     if (queueNextSnapshot) {
         nextSnapshotTimer = setTimeout(() => createSnapshot(folderPath, queueNextSnapshot, nextSnapshotInSeconds, callback), nextSnapshotInSeconds * 1000)
         callback(CallbackType.snapshot_timer_started, {
-            "nextSnapshotMiliseconds": nextSnapshotInSeconds * 1000,
+            "nextSnapshotInSeconds": nextSnapshotInSeconds,
             "timestamp": Date.now()
         })
     }
