@@ -1,0 +1,1 @@
+export _JAVA_OPTIONS='-Dlog4j.configuration=file:///Users/gokaykucuk/node/defterdar-core/dist/jgit/log4j.debug'

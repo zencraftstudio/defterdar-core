@@ -75,16 +75,17 @@ export const listUploadedArchives = async () => {
     return filenamesRepsonse.data
 }
 
-// export const listUploadedArchiveVersions = async (archivePath: string) => {
-//     const b2 = await getB2Client();
-//
-//     const fileVersionsResponse = await b2.listFileVersions({
-//         bucketId: getCloudParameters()['bucket'],
-//         maxFileCount: 100,
-//         // ...common arguments (optional)
-//     });  // returns promise
-//     return fileVersionsResponse.data
-// }
+export const listUploadedArchiveVersions = async (archivePath: string) => {
+    const b2 = await getB2Client();
+
+    const fileVersionsResponse = await b2.listFileVersions({
+        bucketId: getCloudParameters()['bucket'],
+        maxFileCount: 100,
+        prefixObjectKey: getCredentials()['folderPrefix']
+        // ...common arguments (optional)
+    });  // returns promise
+    return fileVersionsResponse.data
+}
 //
 // export const deleteUploadedArchiveVersion = async (archiveVersionId: string) => {
 //

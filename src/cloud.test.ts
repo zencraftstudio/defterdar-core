@@ -1,4 +1,4 @@
-import {getB2Client, listUploadedArchives, uploadArchive} from "./cloud"
+import {getB2Client, listUploadedArchives, listUploadedArchiveVersions, uploadArchive} from "./cloud"
 
 // test("1 + 1", () => expect(1).toBe(1));
 
@@ -12,5 +12,14 @@ test("can upload archive and list archives", async () => {
     const uploadResult = await uploadArchive(archivePath)
     expect(uploadResult['fileId']).toBeDefined()
     const listResult = await listUploadedArchives()
+    expect(listResult.files.length).toBe(1)
+}, 10000);
+
+
+test("can upload archive and list archive versions", async () => {
+    const archivePath = "src/lib/test.zip"
+    const uploadResult = await uploadArchive(archivePath)
+    expect(uploadResult['fileId']).toBeDefined()
+    const listResult = await listUploadedArchiveVersions(archivePath)
     expect(listResult.files.length).toBe(1)
 }, 10000);

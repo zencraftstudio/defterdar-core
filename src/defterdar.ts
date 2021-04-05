@@ -35,7 +35,7 @@ export const createHistoryVersion = async (folderPath: string,
                                            nextSnapshotInSeconds: number,
                                            callback: CallableFunction) => {
     await createSnapshot(folderPath, queueNextSnapshot, nextSnapshotInSeconds, callback)
-    return await getRepository(folderPath).checkout(commitHash, ["-b", newHistoryName]
+    return getRepository(folderPath).checkout(commitHash, ["-b", newHistoryName]
     )
 }
 export const checkoutHistoryVersion = (folderPath: string, historyVersionName: string) => simpleGit(folderPath).checkout(historyVersionName)
