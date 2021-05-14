@@ -46,8 +46,6 @@ test("can create snapshot", async () => {
     await defterdar_1.createSnapshot(newTestRepositoryFolder, true, 10, () => {
     });
 });
-defterdar_1.createSnapshot("/Users/gokaykucuk/temp/tempRepo", true, 10, () => {
-});
 test("can create archive", async () => {
     const newTestRepositoryFolder = await testUtils_1.initNewRepositoryFolder("create_archive");
     await testUtils_1.createTestCommits(newTestRepositoryFolder, 10);

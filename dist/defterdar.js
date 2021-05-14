@@ -61,6 +61,7 @@ const createSnapshot = async (folderPath, queueNextSnapshot, nextSnapshotInSecon
     // Start with clearing timeout, so no other snapshots
     // can start while this one is running
     clearTimeout(nextSnapshotTimer);
+    nextSnapshotTimer = null;
     const commitMessage = await exports.createCommitMessage(folderPath);
     const commitResult = await exports.createCommit(folderPath, commitMessage);
     if (commitResult.commit) {

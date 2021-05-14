@@ -75,6 +75,7 @@ export const createSnapshot = async (folderPath: string, queueNextSnapshot: bool
     // Start with clearing timeout, so no other snapshots
     // can start while this one is running
     clearTimeout(nextSnapshotTimer)
+    nextSnapshotTimer = null
 
     const commitMessage = await createCommitMessage(folderPath)
     const commitResult = await createCommit(folderPath, commitMessage)

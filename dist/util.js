@@ -24,6 +24,12 @@ const GIT_FOLDERS = {
         },
         "x32": {
             "all": "dist/git/win_32/cmd/git.exe"
+        },
+        "ia32": {
+            "all": "dist/git/win_32/cmd/git.exe"
+        },
+        "ia64": {
+            "all": "dist/git/win_32/cmd/git.exe"
         }
     }
 };
@@ -35,7 +41,7 @@ const getGitExecutable = () => {
     // @ts-ignore
     const arch_gits = platform_gits[arch];
     const release = parseInt(os.release()).toString();
-    if (platform === "win_32") {
+    if (platform === "win32") {
         return `${__dirname}/../${arch_gits["all"]}`;
     }
     else {
