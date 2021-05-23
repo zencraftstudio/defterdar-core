@@ -1,11 +1,10 @@
 import * as os from "os";
 import getAppDataPath from "appdata-path";
-import {DownloadEndedStats, DownloaderHelper, Stats} from "node-downloader-helper"
 
-const glob = require("glob")
 import {promises as fsp} from "fs"
 import fs from "fs"
-import readdirRecursive from "./readDirRecursive";
+import download from "./download";
+import path from "path";
 
 const unzipper = require("unzipper")
 
@@ -37,60 +36,33 @@ export const getGitDownloadUrl = async () => {
 
 export const downloadGitBuild = async () => {
     const downloadUrl = await getGitDownloadUrl();
-    // const zipfiles = await readdirRecursive(appFolder, (file: string) =>
-    //     file.includes(".zip")
-    // );
-
-    // zipfiles.map(async (path) => {
-    //     await fsp.rm(path)
-    // });
-
     await cleanLibGitFolder()
     const appLibGitFolder = await getLibGitFolder()
 
-    // const globArr = await glob(`${appFolder}*.zip`);
-    // globArr.files.map(async (file: string) => (await fsp.rm(file)));
-    const dl = new DownloaderHelper(downloadUrl, appLibGitFolder);
+    const result = await download(downloadUrl,appLibGitFolder, 'git.zip');
 
-
-    const download = await dl.start();
-
-
-    let test;
-    dl.on('end', async (e: DownloadEndedStats) => {
-
-        // fs.createReadStream(e.filePath).pipe(unzip.Extract({ path: 'output/path' }));
-        const unzipperFile = await unzipper.Open.file(e.filePath)
-        const unzipperResult = await unzipperFile.extract({path: appLibGitFolder, concurrency: 5})
-        await fsp.rm(e.filePath)
-        test = e.filePath
-        // return e.filePath // Bu burda calismaz cunku icerdeki fonksyiondan donuyor.
-        return test
-    });
-    dl.on('progress', (e: Stats) => {
-        // TODO: Connect this to a callback. So the frontend can get progress.
-        console.log(e)
-    })
-
-
+    const unzipperFile = await unzipper.Open.file(path.join(appLibGitFolder, "/git.zip"))
+    await unzipperFile.extract({path: appLibGitFolder, concurrency: 5})
+    await fsp.rm(path.join(appLibGitFolder, "/git.zip"))
+    return path.join(appLibGitFolder, "git")
 
 }
 
 const cleanLibGitFolder = async () => {
-    const gitLibFolder = `${getAppFolder()}/lib`;
+    const gitLibFolder = `${getAppFolder()}/lib/`;
     await fsp.rmdir(gitLibFolder, {recursive: true});
     return gitLibFolder
 }
 
 const getLibGitFolder = async () => {
-    const gitLibFolder = `${getAppFolder()}/lib/git`;
+    const gitLibFolder = `${getAppFolder()}lib/`;
     await fsp.mkdir(gitLibFolder, {recursive: true});
     return gitLibFolder
 }
 
 
 const getAppFolder = () => {
-    const appFolderPath = `${getAppDataPath(".defterdar-core")}/`
+    const appFolderPath = `${getAppDataPath(".defterdar-core/")}`
     fs.mkdirSync(appFolderPath, {recursive: true});
     return appFolderPath
 }
@@ -101,7 +73,7 @@ export const gitExecutableExists = () => {
     return fs.existsSync(gitExecutablePath);
 }
 export const getGitExecutablePath = () => {
-    const appDataPath = getAppDataPath(".defterdar-core");
+    const appDataPath = getAppDataPath(".defterdar-core/");
     const osArchInfo = getOsArchInfo()
     let executablePath = "git/2.31.0/bin/git"
     if (osArchInfo.platform == "win32") {

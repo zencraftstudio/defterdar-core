@@ -8,7 +8,7 @@ test("can get git executable path", () => {
 
 test("download git build", async ()=>{
     const gitBuild = await downloadGitBuild()
-    return "hello world"
+    expect(gitBuild).toBeTruthy()
 }, 15000)
 
 
