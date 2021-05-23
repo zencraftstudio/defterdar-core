@@ -1,5 +1,5 @@
 import simpleGit from "simple-git"
-import {getGitExecutable} from "./util"
+import {getGitExecutablePath} from "./util"
 
 export enum CallbackType {
     initialization,
@@ -11,7 +11,7 @@ export enum CallbackType {
     snapshot_timer_stopped
 }
 
-export const getRepository = (folderPath: string) => simpleGit(folderPath, {binary: getGitExecutable()}).init()
+export const getRepository = (folderPath: string) => simpleGit(folderPath, {binary: getGitExecutablePath()}).init()
 
 export const getCommitHistory = (folderPath: string) => (
     getRepository(folderPath).log()
@@ -35,8 +35,8 @@ export const createHistoryVersion = async (folderPath: string,
                                            nextSnapshotInSeconds: number,
                                            callback: CallableFunction) => {
     await createSnapshot(folderPath, queueNextSnapshot, nextSnapshotInSeconds, callback)
-    return await getRepository(folderPath).checkout(commitHash, ["-b", newHistoryName]
-    )
+    return getRepository(folderPath).checkout(commitHash, ["-b", newHistoryName]
+    );
 }
 export const checkoutHistoryVersion = (folderPath: string, historyVersionName: string) => simpleGit(folderPath).checkout(historyVersionName)
 
