@@ -14,7 +14,7 @@ var CallbackType;
     CallbackType[CallbackType["snapshot_timer_started"] = 5] = "snapshot_timer_started";
     CallbackType[CallbackType["snapshot_timer_stopped"] = 6] = "snapshot_timer_stopped";
 })(CallbackType = exports.CallbackType || (exports.CallbackType = {}));
-const getRepository = (folderPath) => simple_git_1.default(folderPath, { binary: util_1.getGitExecutable() }).init();
+const getRepository = (folderPath) => simple_git_1.default(folderPath, { binary: util_1.getGitExecutablePath() }).init();
 exports.getRepository = getRepository;
 const getCommitHistory = (folderPath) => (exports.getRepository(folderPath).log());
 exports.getCommitHistory = getCommitHistory;
@@ -31,7 +31,7 @@ const getHistoryVersions = (folderPath) => simple_git_1.default(folderPath).bran
 exports.getHistoryVersions = getHistoryVersions;
 const createHistoryVersion = async (folderPath, commitHash, newHistoryName, queueNextSnapshot, nextSnapshotInSeconds, callback) => {
     await exports.createSnapshot(folderPath, queueNextSnapshot, nextSnapshotInSeconds, callback);
-    return await exports.getRepository(folderPath).checkout(commitHash, ["-b", newHistoryName]);
+    return exports.getRepository(folderPath).checkout(commitHash, ["-b", newHistoryName]);
 };
 exports.createHistoryVersion = createHistoryVersion;
 const checkoutHistoryVersion = (folderPath, historyVersionName) => simple_git_1.default(folderPath).checkout(historyVersionName);
