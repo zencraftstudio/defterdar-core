@@ -11,7 +11,10 @@ export enum CallbackType {
     snapshot_timer_stopped
 }
 
-export const getRepository = (folderPath: string) => simpleGit(folderPath, {binary: getGitExecutablePath()}).init()
+export const getRepository = (folderPath: string) => {
+    // const binaryPath = getOrDownloadGitExecutable()
+    return simpleGit(folderPath, {binary: getGitExecutablePath()}).init()
+}
 
 export const getCommitHistory = (folderPath: string) => (
     getRepository(folderPath).log()

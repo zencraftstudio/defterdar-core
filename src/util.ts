@@ -13,14 +13,13 @@ export const consoleLog = (message: string) => {
     console.log(message)
 }
 
-const getOrDownloadGitExecutable = async () => {
+export const getOrDownloadGitExecutable = async () => {
     if (gitExecutableExists()) {
         return getGitExecutablePath()
     } else {
         await downloadGitBuild()
         return getGitExecutablePath()
     }
-    return "test"
 }
 
 export const getGitDownloadUrl = async () => {
