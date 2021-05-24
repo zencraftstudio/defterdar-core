@@ -1,4 +1,5 @@
 export declare const consoleLog: (message: string) => void;
+export declare const getOrDownloadGitExecutable: () => Promise<string>;
 export declare const getGitDownloadUrl: () => Promise<string>;
 export declare const downloadGitBuild: () => Promise<string>;
 export declare const gitExecutableExists: () => boolean;

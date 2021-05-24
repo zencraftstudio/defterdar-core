@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOsArchInfo = exports.getGitExecutablePath = exports.gitExecutableExists = exports.downloadGitBuild = exports.getGitDownloadUrl = exports.consoleLog = void 0;
+exports.getOsArchInfo = exports.getGitExecutablePath = exports.gitExecutableExists = exports.downloadGitBuild = exports.getGitDownloadUrl = exports.getOrDownloadGitExecutable = exports.consoleLog = void 0;
 const tslib_1 = require("tslib");
 const os = tslib_1.__importStar(require("os"));
 const appdata_path_1 = tslib_1.__importDefault(require("appdata-path"));
@@ -21,8 +21,8 @@ const getOrDownloadGitExecutable = async () => {
         await exports.downloadGitBuild();
         return exports.getGitExecutablePath();
     }
-    return "test";
 };
+exports.getOrDownloadGitExecutable = getOrDownloadGitExecutable;
 const getGitDownloadUrl = async () => {
     const osArchInfo = exports.getOsArchInfo();
     if (osArchInfo.platform === "darwin") {

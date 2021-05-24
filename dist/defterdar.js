@@ -14,7 +14,10 @@ var CallbackType;
     CallbackType[CallbackType["snapshot_timer_started"] = 5] = "snapshot_timer_started";
     CallbackType[CallbackType["snapshot_timer_stopped"] = 6] = "snapshot_timer_stopped";
 })(CallbackType = exports.CallbackType || (exports.CallbackType = {}));
-const getRepository = (folderPath) => simple_git_1.default(folderPath, { binary: util_1.getGitExecutablePath() }).init();
+const getRepository = (folderPath) => {
+    // const binaryPath = getOrDownloadGitExecutable()
+    return simple_git_1.default(folderPath, { binary: util_1.getGitExecutablePath() }).init();
+};
 exports.getRepository = getRepository;
 const getCommitHistory = (folderPath) => (exports.getRepository(folderPath).log());
 exports.getCommitHistory = getCommitHistory;
