@@ -75,7 +75,7 @@ export const gitExecutableExists = () => {
 export const getGitExecutablePath = () => {
     const appDataPath = getAppDataPath(".defterdar-core/");
     const osArchInfo = getOsArchInfo()
-    let executablePath = "git/2.31.0/bin/git"
+    let executablePath = "git/bin/git"
     if (osArchInfo.platform == "win32") {
         executablePath = "cmd/git.exe"
     }
