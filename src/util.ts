@@ -13,15 +13,6 @@ export const consoleLog = (message: string) => {
     console.log(message)
 }
 
-export const getOrDownloadGitExecutable = async () => {
-    if (gitExecutableExists()) {
-        return getGitExecutablePath()
-    } else {
-        await downloadGitBuild()
-        return getGitExecutablePath()
-    }
-}
-
 export const getGitDownloadUrl = async () => {
     const osArchInfo = getOsArchInfo()
     if (osArchInfo.platform === "darwin") {
@@ -33,24 +24,22 @@ export const getGitDownloadUrl = async () => {
 }
 
 
-export const downloadGitBuild = async () => {
-    const downloadUrl = await getGitDownloadUrl();
-    await cleanLibGitFolder()
-    const appLibGitFolder = await getLibGitFolder()
-
-    const result = await download(downloadUrl,appLibGitFolder, 'git.zip');
-
-    const unzipperFile = await unzipper.Open.file(path.join(appLibGitFolder, "/git.zip"))
-    await unzipperFile.extract({path: appLibGitFolder, concurrency: 5})
-    await fsp.rm(path.join(appLibGitFolder, "/git.zip"))
-    return path.join(appLibGitFolder, "git")
-
+export const downloadFile = async (url: string, local_folder_path: string) => {
+    const TEMPORARY_FILE_NAME = "download.zip"
+    await download(url,local_folder_path, TEMPORARY_FILE_NAME);
+    return local_folder_path
 }
 
-const cleanLibGitFolder = async () => {
-    const gitLibFolder = `${getAppFolder()}/lib/`;
-    await fsp.rmdir(gitLibFolder, {recursive: true});
-    return gitLibFolder
+export const unzipAndDeleteFile = async ( filePath: string,unzipFolderPath: string) => {
+    const unzipperFile = await unzipper.Open.file(filePath)
+    await unzipperFile.extract({path: unzipFolderPath, concurrency: 5})
+    await fsp.rm(path.join(filePath))
+    return unzipFolderPath
+}
+
+const cleanFolder = async (local_folder_path: string) => {
+    await fsp.rmdir(local_folder_path, {recursive: true});
+    return local_folder_path
 }
 
 const getLibGitFolder = async () => {
@@ -62,6 +51,7 @@ const getLibGitFolder = async () => {
 
 const getAppFolder = () => {
     const appFolderPath = `${getAppDataPath(".defterdar-core/")}`
+    console.log('Appfolderpath',appFolderPath)
     fs.mkdirSync(appFolderPath, {recursive: true});
     return appFolderPath
 }
@@ -72,13 +62,13 @@ export const gitExecutableExists = () => {
     return fs.existsSync(gitExecutablePath);
 }
 export const getGitExecutablePath = () => {
-    const appDataPath = getAppDataPath(".defterdar-core/");
+    const appDataPath = getAppDataPath(".defterdar-core");
     const osArchInfo = getOsArchInfo()
     let executablePath = "git/bin/git"
     if (osArchInfo.platform == "win32") {
         executablePath = "cmd/git.exe"
     }
-    return `${appDataPath} / ${executablePath}`;
+    return `${appDataPath}/${executablePath}`;
 }
 
 export const getOsArchInfo = () => {
@@ -88,9 +78,4 @@ export const getOsArchInfo = () => {
         "release": parseInt(os.release()).toString()
     }
     return osArchInfo
-}
-
-
-const unzipAndDeleteGitBuild = async () => {
-
 }

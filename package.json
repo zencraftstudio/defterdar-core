@@ -23,6 +23,7 @@
     "jest": {
         "preset": "ts-jest",
         "testEnvironment": "node",
+        "globalSetup": "./test/jestGlobalSetup.js",
         "roots": [
             "<rootDir>"
         ],
