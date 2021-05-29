@@ -13,7 +13,7 @@ export const consoleLog = (message: string) => {
     console.log(message)
 }
 
-export const getGitDownloadUrl = async () => {
+export const getGitDownloadUrl = () => {
     const osArchInfo = getOsArchInfo()
     if (osArchInfo.platform === "darwin") {
         return `https://defterdar.s3.eu-central-1.amazonaws.com/installation/mac_git.zip`
@@ -21,6 +21,12 @@ export const getGitDownloadUrl = async () => {
         return `https://github.com/git-for-windows/git/releases/download/v2.31.0.windows.1/MinGit-2.31.0-${osArchInfo.arch}-bit.zip`
     }
 
+}
+
+// Call after checking 
+export const setupGit = async() => {
+    await downloadFile(getGitDownloadUrl(), `${getAppFolder()}/download.zip`)
+    await unzipAndDeleteFile(`${getAppFolder()}`,`${getAppFolder()}/download.zip`)
 }
 
 
@@ -42,15 +48,9 @@ const cleanFolder = async (local_folder_path: string) => {
     return local_folder_path
 }
 
-const getLibGitFolder = async () => {
-    const gitLibFolder = `${getAppFolder()}lib/`;
-    await fsp.mkdir(gitLibFolder, {recursive: true});
-    return gitLibFolder
-}
-
 
 const getAppFolder = () => {
-    const appFolderPath = `${getAppDataPath(".defterdar-core/")}`
+    const appFolderPath = `${getAppDataPath(".defterdar-core")}`
     console.log('Appfolderpath',appFolderPath)
     fs.mkdirSync(appFolderPath, {recursive: true});
     return appFolderPath
