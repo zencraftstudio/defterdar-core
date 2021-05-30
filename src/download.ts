@@ -1,5 +1,6 @@
 import { IncomingMessage } from "http";
 import fs from "fs";
+import * as path from 'path';
 
 interface DownloadResponse extends IncomingMessage { headers: any }
 
@@ -12,7 +13,7 @@ const download = (url: string, dirPath: string, fileName: string ) => {
             throw new Error(`${dirPath}, is not a directory.`)
         }
 
-        const filePath: string = dirPath + fileName;
+        const filePath: string = path.join(dirPath, fileName);
 
         const protocol: any = url.includes('https') ? 'https' : 'http'
 
