@@ -23,22 +23,20 @@ export const getGitDownloadUrl = () => {
 
 }
 
-// Call after checking 
-export const setupGit = async() => {
-    const gitDownloadUrl =  getGitDownloadUrl()
-    const downloadPath = `${getAppFolder()}/download.zip`
-    await downloadFile(gitDownloadUrl, downloadPath)
-    await unzipAndDeleteFile(`${getAppFolder()}`,downloadPath)
+// Call after checking
+export const setupGit = async () => {
+    const gitDownloadUrl = getGitDownloadUrl()
+    const downloadPath = `${getAppFolder()}`
+    await downloadFile(gitDownloadUrl, downloadPath, 'download.zip')
+    await unzipAndDeleteFile(`${getAppFolder()}`, downloadPath)
 }
 
 
-export const downloadFile = async (url: string, local_folder_path: string) => {
-    const TEMPORARY_FILE_NAME = "download.zip"
-    await download(url,local_folder_path, TEMPORARY_FILE_NAME);
-    return local_folder_path
+export const downloadFile = (url: string, localFolderPath: string, fileName: string) => {
+    return download(url, localFolderPath, fileName);
 }
 
-export const unzipAndDeleteFile = async ( filePath: string,unzipFolderPath: string) => {
+export const unzipAndDeleteFile = async (filePath: string, unzipFolderPath: string) => {
     const unzipperFile = await unzipper.Open.file(filePath)
     await unzipperFile.extract({path: unzipFolderPath, concurrency: 5})
     await fsp.rm(path.join(filePath))
@@ -53,7 +51,7 @@ const cleanFolder = async (local_folder_path: string) => {
 
 const getAppFolder = () => {
     const appFolderPath = `${getAppDataPath(".defterdar-core")}`
-    console.log('Appfolderpath',appFolderPath)
+    console.log('Appfolderpath', appFolderPath)
     fs.mkdirSync(appFolderPath, {recursive: true});
     return appFolderPath
 }
