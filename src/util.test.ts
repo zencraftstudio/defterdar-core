@@ -3,7 +3,7 @@ import {
   downloadFile,
   getGitDownloadUrl,
   getGitExecutablePath,
-  getOsArchInfo,
+  getOsArchInfo, setupGit,
   unzipAndDeleteFile,
 } from "./util";
 
@@ -25,11 +25,6 @@ test("can get os arch info", () => {
 test("can get download url", async () => {
   const downloadUrl = await getGitDownloadUrl();
   expect(downloadUrl).toBeDefined();
-});
-
-test("getGitExecutablePath", async () => {
-  const gitExecutablePath = await getGitExecutablePath();
-  console.log(gitExecutablePath);
 });
 
 const TEMP_FOLDER = `${process.cwd()}/tmp`;
@@ -57,3 +52,8 @@ test("unzipFile", async () => {
   );
   expect(result).toBeDefined()
 });
+
+test("setup git", async() => {
+  const setupGitResponse = await setupGit()
+  console.log(setupGitResponse)
+})

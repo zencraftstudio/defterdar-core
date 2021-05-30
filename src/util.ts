@@ -25,8 +25,10 @@ export const getGitDownloadUrl = () => {
 
 // Call after checking 
 export const setupGit = async() => {
-    await downloadFile(getGitDownloadUrl(), `${getAppFolder()}/download.zip`)
-    await unzipAndDeleteFile(`${getAppFolder()}`,`${getAppFolder()}/download.zip`)
+    const gitDownloadUrl =  getGitDownloadUrl()
+    const downloadPath = `${getAppFolder()}/download.zip`
+    await downloadFile(gitDownloadUrl, downloadPath)
+    await unzipAndDeleteFile(`${getAppFolder()}`,downloadPath)
 }
 
 
