@@ -7,11 +7,15 @@ import {
 } from "./defterdar"
 import {cleanRepositoriesFolder, createTestCommits, initNewRepositoryFolder, replaceFileContent} from "./test/testUtils"
 import * as fs from "fs";
-import {folderExists} from "simple-git/src/lib/utils";
+import {isGitInstalled, setupGit} from "./git";
 
 beforeAll(async () => {
+    if (!isGitInstalled()) {
+        await setupGit()
+        console.log("test")
+    }
     await cleanRepositoriesFolder()
-})
+});
 
 
 test("initializing or read repository for a given folder", async () => {

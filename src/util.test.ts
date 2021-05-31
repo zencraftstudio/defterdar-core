@@ -1,6 +1,8 @@
-import {getGitExecutable} from "./util";
+import {
+  getOsArchInfo,
+} from "./util";
 
-test("can get git executble", () => {
-    const gitExecutble = getGitExecutable()
-    expect(gitExecutble).toBeDefined()
+test("can get os arch info", () => {
+  const osArchInfo = getOsArchInfo();
+  expect(osArchInfo).toBeDefined();
 });

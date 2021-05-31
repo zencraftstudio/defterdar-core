@@ -13,6 +13,7 @@
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "allowJs": true,
     "strictPropertyInitialization": false,
     "typeRoots": [
       "./node_modules/@types"
