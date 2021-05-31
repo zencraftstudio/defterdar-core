@@ -1,12 +1,12 @@
 import download from "./download";
 import {promises as fsp} from "fs";
-import {getAppFolder, getOsArchInfo} from "./util";
+import {execShellCommand, getAppFolder, getOsArchInfo} from "./util";
 import * as fs from "fs";
 import * as path from "path";
 import {ExecException} from "child_process";
 
 const gitInstallationFolder = "defterdarGit"
-const { exec } = require("child_process");
+const {exec} = require("child_process");
 
 
 export const getGitDownloadUrl = () => {
@@ -29,10 +29,9 @@ export const setupGit = async () => {
 }
 
 export const unzipAndDeleteFile = async (filePath: string, unzipFolderPath: string) => {
-    exec(`tar -xf ${filePath} -C ${unzipFolderPath}`, async (error: ExecException | null, stdout:string , stderr: string) => {
-        await fsp.rm(path.join(filePath))
-        return unzipFolderPath
-    })
+    await execShellCommand(`tar -xf "${filePath}" -C "${unzipFolderPath}"`)
+    await fsp.rm(path.join(filePath))
+    return unzipFolderPath
     // const unzipperFile = await unzipper.Open.file(filePath)
     // await unzipperFile.extract({path: unzipFolderPath, concurrency: 5})
 }
@@ -52,6 +51,10 @@ export const getGitExecutablePath = () => {
     return `${appDataPath}/${executablePath}`;
 }
 
+export const removeInstalledGit = async () => {
+    const gitFolder = path.join(getAppFolder(), 'git')
+    await cleanFolder(gitFolder)
+}
 
 const cleanFolder = async (local_folder_path: string) => {
     await fsp.rmdir(local_folder_path, {recursive: true});

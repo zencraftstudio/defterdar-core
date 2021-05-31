@@ -1,5 +1,5 @@
 import simpleGit from "simple-git"
-import {getGitExecutablePath} from "./util"
+import {getGitExecutablePath} from "./git"
 
 export enum CallbackType {
     initialization,

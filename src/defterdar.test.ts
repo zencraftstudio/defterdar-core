@@ -7,10 +7,10 @@ import {
 } from "./defterdar"
 import {cleanRepositoriesFolder, createTestCommits, initNewRepositoryFolder, replaceFileContent} from "./test/testUtils"
 import * as fs from "fs";
-import { gitExecutableExists, setupGit } from "./util";
+import {isGitInstalled, setupGit} from "./git";
 
 beforeAll(async () => {
-    if(!gitExecutableExists()){
+    if (!isGitInstalled()) {
         await setupGit()
         console.log("test")
     }
